@@ -37,10 +37,22 @@ def shadow_mask(src: np.ndarray, points: np.ndarray, color: list):
     mask = cv2.GaussianBlur(mask, (7, 7), 5)
     return mask
 
+# ctx =webrtc_streamer(
+#     key="example",
+#     video_processor_factory=VideoProcessor,
+#     rtc_configuration={ # Add this line
+#         "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+#     }
+# )
+
 ctx =webrtc_streamer(
     key="example",
     video_processor_factory=VideoProcessor,
-    rtc_configuration={ # Add this line
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+    rtc_configuration=RTCConfiguration(
+    {
+      "RTCIceServer": [{
+        "urls": ["stun:stun.l.google.com:19302"]
+      }]
     }
+)
 )
