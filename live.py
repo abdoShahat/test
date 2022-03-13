@@ -61,6 +61,10 @@ def shadow_mask(src: np.ndarray, points: np.ndarray, color: list):
 # )
 # )
 
+RTC_CONFIGURATION = RTCConfiguration(
+    {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+)
+
 webrtc_ctx = webrtc_streamer(
     key="object-detection",
     mode=WebRtcMode.SENDRECV,
