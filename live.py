@@ -51,7 +51,9 @@ ctx =webrtc_streamer(
     rtc_configuration=RTCConfiguration(
     {
       "RTCIceServer": [{
-        "urls": ["stun:stun.l.google.com:19302"]
+        "urls": ["stun:stun.l.google.com:19302"],
+	"username": "user",
+	"credential": "password",
       }]
     }
 )
