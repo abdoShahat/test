@@ -4,13 +4,7 @@ import cv2
 from landmark import detect_landmarks, normalize_landmarks, plot_landmarks
 from mediapipe.python.solutions.face_detection import FaceDetection
 import numpy as np
-from streamlit_webrtc import (
-    AudioProcessorBase,
-    RTCConfiguration,
-    VideoProcessorBase,
-    WebRtcMode,
-    webrtc_streamer,
-)
+from streamlit_webrtc import AudioProcessorBase,RTCConfiguration,VideoProcessorBase,WebRtcMode,webrtc_streamer
 from aiortc.contrib.media import MediaPlayer
 
 # cascade = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
