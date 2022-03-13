@@ -1,9 +1,17 @@
-from streamlit_webrtc import webrtc_streamer, RTCConfiguration
+# from streamlit_webrtc import webrtc_streamer, RTCConfiguration
 import av
 import cv2
 from landmark import detect_landmarks, normalize_landmarks, plot_landmarks
 from mediapipe.python.solutions.face_detection import FaceDetection
 import numpy as np
+from streamlit_webrtc import (
+    AudioProcessorBase,
+    RTCConfiguration,
+    VideoProcessorBase,
+    WebRtcMode,
+    webrtc_streamer,
+)
+from aiortc.contrib.media import MediaPlayer
 
 # cascade = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
 Left_shadow = [190,189,56,221,28,222,27,223,29,224,30,225,113,247,246]
@@ -45,16 +53,25 @@ def shadow_mask(src: np.ndarray, points: np.ndarray, color: list):
 #     }
 # )
 
-ctx =webrtc_streamer(
-    key="example",
-    video_processor_factory=VideoProcessor,
-    rtc_configuration=RTCConfiguration(
-    {
-      "RTCIceServer": [{
-        "urls": ["stun:stun.l.google.com:19302"],
-	"username": "user",
-	"credential": "password",
-      }]
-    }
-)
+# ctx =webrtc_streamer(
+#     key="example",
+#     video_processor_factory=VideoProcessor,
+#     rtc_configuration=RTCConfiguration(
+#     {
+#       "RTCIceServer": [{
+#         "urls": ["stun:stun.l.google.com:19302"],
+# 	"username": "user",
+# 	"credential": "password",
+#       }]
+#     }
+# )
+# )
+
+webrtc_ctx = webrtc_streamer(
+    key="object-detection",
+    mode=WebRtcMode.SENDRECV,
+    rtc_configuration=RTC_CONFIGURATION,
+    video_processor_factory=MobileNetSSDVideoProcessor,
+    media_stream_constraints={"video": True, "audio": False},
+    async_processing=True
 )
