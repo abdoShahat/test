@@ -2,7 +2,7 @@ aiortc==1.3.0
 av==8.1.0
 matplotlib==3.5.1
 numpy==1.23.1
-opencv-python-headless==4.5.4.60
+opencv-python==4.5.5.64
 streamlit==1.8.0
 streamlit_webrtc==0.35.1
 mediapipe
