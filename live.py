@@ -6,24 +6,39 @@ from mediapipe.python.solutions.face_detection import FaceDetection
 import numpy as np
 from streamlit_webrtc import AudioProcessorBase,RTCConfiguration,VideoProcessorBase,WebRtcMode,webrtc_streamer
 from aiortc.contrib.media import MediaPlayer
+from PIL import ImageColor
+import streamlit as st
 
 # cascade = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
+# Left_shadow = [190,189,56,221,28,222,27,223,29,224,30,225,113,247,246]
 Left_shadow = [190,189,56,221,28,222,27,223,29,224,30,225,113,247,246]
-Right_shadow = [414,413,286,441,258,442,257,443,259,444,260,445,467,342,263]
+# Right_shadow = [414,413,286,441,258,442,257,443,259,444,260,445,467,342,263]
+# Right_shadow = [414,413,441,442,443,444,445,342,359,467,260,259,257,258,286,463,414,441,398,414,441,384,286,414,385,258,442,386,257,443,387,259,444,388,260,445,466,467]  # left in streamlit 
+
+Right_shadow = [413,414,442,443,444,445,342,467,260,259,257,258,286,414,384,385,386,387,388,466,263,398,414,286,384,286,258,385,258,257,386,257,259,387,259,260,388,260,467,466,467,359,263]
+
+color = st.color_picker('Pick A Color', '#91b9fa')
+
+color=ImageColor.getcolor(color,'RGB')
+st.write(color)
+
 class VideoProcessor:
 	def recv(self, frame):
-         frm = frame.to_ndarray(format="bgr24")
-         ret_landmarks = detect_landmarks(frm, True)
-         height, width, _ = frm.shape
-         feature_landmarks = None
-         feature_landmarks_left = normalize_landmarks(ret_landmarks,height,width,Left_shadow)
-         mask_left = shadow_mask(frm,feature_landmarks_left,[0, 0, 100])
-         feature_landmarks_right = normalize_landmarks(ret_landmarks,height,width,Right_shadow)
-         mask_right = shadow_mask(frm,feature_landmarks_right,[0, 0, 100])
-         mask  = mask_left+mask_right
-         output = cv2.addWeighted(frm,1.0,mask,0.4, 0.0)
-         print('here 1')
-         return av.VideoFrame.from_ndarray(output, format='bgr24')
+         try:
+            frm = frame.to_ndarray(format="rgb24")
+            ret_landmarks = detect_landmarks(frm, True)
+            height, width, _ = frm.shape
+            feature_landmarks = None
+            feature_landmarks_left = normalize_landmarks(ret_landmarks,height,width,Left_shadow)
+            mask_left = shadow_mask(frm,feature_landmarks_left,list(color))
+            feature_landmarks_right = normalize_landmarks(ret_landmarks,height,width,Right_shadow)
+            mask_right = shadow_mask(frm,feature_landmarks_right,[63, 64, 108])
+            mask  = mask_left+mask_right
+            output = cv2.addWeighted(frm,1.0,mask,0.4, 0.0)
+            print('here 1')
+            return av.VideoFrame.from_ndarray(output, format='rgb24')
+         except:
+             VideoProcessor
 
 
 def shadow_mask(src: np.ndarray, points: np.ndarray, color: list):
