@@ -31,12 +31,11 @@ if option =='color_1':
     co = [206,157,151]
     m = '#BBA6BD'
 elif option == 'color_2':
+    color = [10, 5, 120]
+    m = '#945E9C'
+elif option == 'color_3':
     color = [60,60,60]
     m = '#d0b49f'
-elif option == 'color_3':
-    color = [10, 5, 120]
-    co = [185,136,160]
-    m = '#945E9C'
 elif option == 'color_4':
     color = [107, 182, 203]
     m = '#9DB6CC' 
@@ -58,12 +57,12 @@ class VideoProcessor:
             feature_landmarks = None
             feature_landmarks_left = normalize_landmarks(ret_landmarks,height,width,Left_shadow)
             mask_left = shadow_mask(frm,feature_landmarks_left,color)
-#             print('color is ',color)
+            print('color is ',color)
             feature_landmarks_right = normalize_landmarks(ret_landmarks,height,width,Right_shadow)
             mask_right = shadow_mask(frm,feature_landmarks_right,color)
             mask  = mask_left+mask_right
             output = cv2.addWeighted(frm,1.0,mask,0.4, 0.0)
-#             print('here 1')
+            print('here 1')
             return av.VideoFrame.from_ndarray(output, format='rgb24')
          except:
              VideoProcessor
