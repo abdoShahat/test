@@ -58,12 +58,12 @@ class VideoProcessor:
             feature_landmarks = None
             feature_landmarks_left = normalize_landmarks(ret_landmarks,height,width,Left_shadow)
             mask_left = shadow_mask(frm,feature_landmarks_left,color)
-            print('color is ',color)
+#             print('color is ',color)
             feature_landmarks_right = normalize_landmarks(ret_landmarks,height,width,Right_shadow)
             mask_right = shadow_mask(frm,feature_landmarks_right,color)
             mask  = mask_left+mask_right
             output = cv2.addWeighted(frm,1.0,mask,0.4, 0.0)
-            print('here 1')
+#             print('here 1')
             return av.VideoFrame.from_ndarray(output, format='rgb24')
          except:
              VideoProcessor
