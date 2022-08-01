@@ -1,4 +1,5 @@
 # from streamlit_webrtc import webrtc_streamer, RTCConfiguration
+from turtle import color
 import av
 import cv2
 from landmark import detect_landmarks, normalize_landmarks, plot_landmarks
@@ -17,6 +18,9 @@ Left_shadow = [189,221,222,223,224,225,113,130,246,161,160,159,158,157,173]
 
 Right_shadow = [413,414,442,443,444,445,342,467,260,259,257,258,286,414,384,385,386,387,388,466,263,398,414,286,384,286,258,385,258,257,386,257,259,387,259,260,388,260,467,466,467,359,263]
 
+
+
+
 color = []
 
 option = st.selectbox(
@@ -25,17 +29,26 @@ option = st.selectbox(
 
 if option =='color_1':
     color = [63, 64, 108] 
+    co = [206,157,151]
+    m = '#BBA6BD'
 elif option == 'color_2':
-    color = [54, 79, 115]
+    color = [60,60,60]
+    m = '#d0b49f'
 elif option == 'color_3':
     color = [10, 5, 120]
+    co = [185,136,160]
+    m = '#945E9C'
 elif option == 'color_4':
-    color = [60,60,60]
+    color = [107, 182, 203]
+    m = '#9DB6CC' 
 elif option == 'color_5':
     color = [105, 71, 59]
+    m = '#a47551'
 else :
     color = [45, 15, 5]
 
+
+colors = st.color_picker('Pick A Color', m)
 
 class VideoProcessor:
 	def recv(self, frame):
