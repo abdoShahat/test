@@ -1,4 +1,5 @@
 # from streamlit_webrtc import webrtc_streamer, RTCConfiguration
+from turtle import color
 import av
 import cv2
 from landmark import detect_landmarks, normalize_landmarks, plot_landmarks
@@ -11,16 +12,31 @@ import streamlit as st
 
 # cascade = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
 # Left_shadow = [190,189,56,221,28,222,27,223,29,224,30,225,113,247,246]
-Left_shadow = [190,189,56,221,28,222,27,223,29,224,30,225,113,247,246]
+Left_shadow = [189,221,222,223,224,225,113,130,246,161,160,159,158,157,173]
 # Right_shadow = [414,413,286,441,258,442,257,443,259,444,260,445,467,342,263]
 # Right_shadow = [414,413,441,442,443,444,445,342,359,467,260,259,257,258,286,463,414,441,398,414,441,384,286,414,385,258,442,386,257,443,387,259,444,388,260,445,466,467]  # left in streamlit 
 
 Right_shadow = [413,414,442,443,444,445,342,467,260,259,257,258,286,414,384,385,386,387,388,466,263,398,414,286,384,286,258,385,258,257,386,257,259,387,259,260,388,260,467,466,467,359,263]
 
-color = st.color_picker('Pick A Color', '#91b9fa')
+color = []
 
-color=ImageColor.getcolor(color,'RGB')
-st.write(color)
+option = st.selectbox(
+     'How would you like to be contacted?',
+     ('color_1', 'color_2', 'color_3', 'color_4', 'color_5'))
+
+if option =='color_1':
+    color = [63, 64, 108] 
+elif option == 'color_2':
+    color = [54, 79, 115]
+elif option == 'color_3':
+    color = [10, 5, 120]
+elif option == 'color_4':
+    color = [60,60,60]
+elif option == 'color_5':
+    color = [105, 71, 59]
+else :
+    color = [45, 15, 5]
+
 
 class VideoProcessor:
 	def recv(self, frame):
@@ -30,9 +46,10 @@ class VideoProcessor:
             height, width, _ = frm.shape
             feature_landmarks = None
             feature_landmarks_left = normalize_landmarks(ret_landmarks,height,width,Left_shadow)
-            mask_left = shadow_mask(frm,feature_landmarks_left,list(color))
+            mask_left = shadow_mask(frm,feature_landmarks_left,color)
+            print('color is ',color)
             feature_landmarks_right = normalize_landmarks(ret_landmarks,height,width,Right_shadow)
-            mask_right = shadow_mask(frm,feature_landmarks_right,[63, 64, 108])
+            mask_right = shadow_mask(frm,feature_landmarks_right,color)
             mask  = mask_left+mask_right
             output = cv2.addWeighted(frm,1.0,mask,0.4, 0.0)
             print('here 1')
