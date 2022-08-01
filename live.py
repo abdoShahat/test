@@ -1,5 +1,4 @@
 # from streamlit_webrtc import webrtc_streamer, RTCConfiguration
-from turtle import color
 import av
 import cv2
 from landmark import detect_landmarks, normalize_landmarks, plot_landmarks
