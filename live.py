@@ -62,6 +62,7 @@ class VideoProcessor:
             mask_right = shadow_mask(frm,feature_landmarks_right,color)
             mask  = mask_left+mask_right
             output = cv2.addWeighted(frm,1.0,mask,0.4, 0.0)
+	    output = cv2.flip(output,1)
             print('here 1')
             return av.VideoFrame.from_ndarray(output, format='rgb24')
          except:
